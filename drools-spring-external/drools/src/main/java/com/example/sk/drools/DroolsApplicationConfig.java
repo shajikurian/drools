@@ -1,15 +1,7 @@
 package com.example.sk.drools;
 
-import org.drools.base.util.Drools;
 import org.kie.api.KieServices;
-import org.kie.api.builder.KieBuilder;
-import org.kie.api.builder.KieFileSystem;
-import org.kie.api.builder.KieModule;
-import org.kie.api.builder.KieRepository;
-import org.kie.api.builder.KieScanner;
-import org.kie.api.io.Resource;
-import org.kie.api.runtime.KieContainer;
-import org.kie.internal.io.ResourceFactory;
+import org.kie.api.runtime.KieContainerSessionsPool;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -43,16 +35,24 @@ public class DroolsApplicationConfig {
         return ks.newKieContainer(kModule.getReleaseId());
     }*/
 
-    @Bean
+   /* @Bean
     public KieContainer kieContainer() {
         KieServices ks = KieServices.Factory.get();
         KieContainer kieContainer = ks.newKieContainer(ks.newReleaseId("com.example.sk", "apprules", "0.0.1-SNAPSHOT"));
         KieScanner kScanner = kieServices.newKieScanner( kieContainer );
 
-// Start the KieScanner polling the Maven repository every 10 seconds
+        // Start the KieScanner polling the Maven repository every 10 seconds
         kScanner.start( 10000L );
         return kieContainer;
+    }*/
+
+    @Bean
+    public KieContainerSessionsPool kieContainerPool() {
+        KieServices ks = KieServices.Factory.get();
+        return ks.getKieClasspathContainer().newKieSessionsPool(10);
     }
+
+
 
     public File getFile(String exampleName) {
         File folder = new File( DroolsApplicationConfig.class.getProtectionDomain().getCodeSource().getLocation().getPath());

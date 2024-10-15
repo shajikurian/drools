@@ -1,0 +1,33 @@
+package discount;
+import com.example.sk.drools.discount.BuyingInfo
+global com.example.sk.drools.discount.Discount discount;
+dialect  "mvel"
+
+rule "Checking quantity discount"
+ when
+  BuyingInfo(qty > 2)
+ then
+  discount.value=10;
+end
+
+rule "Checking card discount"
+ when
+  BuyingInfo(cardName > "Master")
+ then
+  discount.value=5;
+end
+
+rule "Checking card type discount"
+ when
+  BuyingInfo(cardType > "Debit")
+ then
+  discount.value=2;
+end
+
+rule "Checking card and qty combined discount"
+ when
+  BuyingInfo(qty > 5, cardType == "Debit", cardName=="Master")
+ then
+  discount.value=15;
+end
+

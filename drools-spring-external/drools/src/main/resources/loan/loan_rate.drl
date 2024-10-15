@@ -1,6 +1,6 @@
-package rules;
-import com.example.sk.drools.Participant
-global com.example.sk.drools.Rate rate;
+package loan;
+import com.example.sk.drools.loan.Participant
+global com.example.sk.drools.loan.Rate rate;
 dialect  "mvel"
 
 rule "Checking Existing Debt Against Loan Amount"
@@ -13,7 +13,7 @@ end
 
 rule "Checking Annual Salary is greater than 50000"
  when
-  Participant(annualSalary <= 50000)
+  Participant(annualSalary <= 30000)
  then
   rate.setLoanStatus("Rejected - Too low salary");
   rate.setLoanRate(999);
@@ -45,7 +45,7 @@ end
 
 rule "Checking Credit Score greater than 750"
  when
-  Participant(creditScore >= 750, annualSalary > 50000,  loanAmount < (2 * existingDebt))
+  Participant(creditScore >= 750, annualSalary > 30000,  loanAmount < (2 * existingDebt))
  then
   rate.setLoanStatus("Approved");
   rate.setLoanRate(5.25);
